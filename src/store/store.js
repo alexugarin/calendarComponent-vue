@@ -1,17 +1,17 @@
 import { ref } from 'vue'
 
 const updateDateGrid = date => {
-    const [ _, monthName, __, year ] = date.dateString.split(' ') // extracting month name and year
-    const numberOfDays = getNumberOfDays(monthName, year) // recieving number of days
-    const currentMonthDates = [] // will contain dates of current month
-    const monthNumber = date.str.getMonth() + 1 // current month number 1 - 12
+    const [ _, monthName, __, year ] = date.dateString.split(' ')
+    const numberOfDays = getNumberOfDays(monthName, year) 
+    const currentMonthDates = [] 
+    const monthNumber = date.str.getMonth() + 1
     for(let i = 0; i < numberOfDays; i++){
-        const item = {} // creating an object that will contain day & date
-        const day = new Date(`${year}-${monthNumber}-${i+1}`).getDay() // getting day number 0 - 6
+        const item = {} 
+        const day = new Date(`${year}-${monthNumber}-${i+1}`).getDay() 
         item.id = i + 1
         item.dt = i + 1
-        item.day = DAYS[day] // getting day from DAYS array
-        currentMonthDates.push(item) // adding item object containing day and date to currentMonthDates array
+        item.day = DAYS[day] 
+        currentMonthDates.push(item) 
     }
     return arrangeGridAccordingToDays(currentMonthDates)
 }
@@ -20,12 +20,12 @@ export const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 const arrangeGridAccordingToDays = currentMonthDates => {
     let newDateGrid = []
-    const firstDay = DAYS.indexOf(currentMonthDates[0].day) // getting index of first day
+    const firstDay = DAYS.indexOf(currentMonthDates[0].day) 
     for(let i = 0; i <= firstDay; i++){
         if(i < firstDay){
             newDateGrid = [...newDateGrid, {
                 id: Math.random(),
-                dt: '', //  adding empty date value
+                dt: '', 
                 day: DAYS[i]
             }]
         }else{
@@ -37,22 +37,22 @@ const arrangeGridAccordingToDays = currentMonthDates => {
 
 
 const getNumberOfDays = (month, year) => {
-    const thirtyOneDays = ['Jan', 'Mar', 'May', 'Jul', 'Aug', 'Oct', 'Dec'] // months having 31 days
+    const thirtyOneDays = ['Jan', 'Mar', 'May', 'Jul', 'Aug', 'Oct', 'Dec'] 
     if(thirtyOneDays.includes(month)) return 31
-    else if(month === 'Feb') return isLeapYear(year) ? 29 : 28 // checking if year is a leap year
+    else if(month === 'Feb') return isLeapYear(year) ? 29 : 28 
     return 30
 }
 
 const isLeapYear = year => {
-    const firstCondition = year % 4 === 0 && year % 100 !== 0 // If a year is divisible by 4 and is not divisible by 100
-    const secondCondition = year % 4 === 0 && year % 100 === 0 && year % 400 === 0 // If a year is divisible by 4 and 100 and 400
+    const firstCondition = year % 4 === 0 && year % 100 !== 0 
+    const secondCondition = year % 4 === 0 && year % 100 === 0 && year % 400 === 0
     if(firstCondition || secondCondition) return true
     return false
 }
 
 const increase = (month, year) => {
     const obj = {}
-    // checking month is not December👇🏻
+    
     if(month !== 12){
         obj.str = new Date(`${year}-${month+1}`)
         obj.dateString = new Date(`${year}-${month+1}`).toDateString()
@@ -64,7 +64,7 @@ const increase = (month, year) => {
 }
 const decrease = (month, year) => {
     const obj = {}
-    // checking month is not January👇🏻
+    
     if(month !== 1){
         obj.str = new Date(`${year}-${month-1}`)
         obj.dateString = new Date(`${year}-${month-1}`).toDateString()
