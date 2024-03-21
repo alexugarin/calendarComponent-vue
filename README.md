@@ -1,6 +1,6 @@
 # calendar-project
 
-## Wiev deployed project on Vercel
+## View deployed project on Vercel
 
 https://calendar-component-vue.vercel.app/
 
