@@ -1,7 +1,12 @@
 <script setup>
 import {DAYS} from '../store/store.js'
-import {ref, inject, computed, watch} from 'vue'
+import {ref, inject, watch} from 'vue'
 
+const props = defineProps({lang:{type: String,
+   required: true,}})
+const lang = ref(props.lang)
+
+const DAYS_RU = ['Сб', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Вс']
 
 const {state, dispatch}  = inject('store');
 
@@ -11,16 +16,15 @@ const setCurrentDate = (date) => dispatch({type: 'clickDate', payload: {date}});
 
 watch(()=> state.value.current, (newCurrent)=>{current.value = newCurrent})
 
-const isCurrentMonthAndYear = computed (()=>(
-    state.value.date.str.getMonth() === current.value.currentMonth &&
-    state.value.date.str.getFullYear() === current.value.currentYear
-))
+watch(() => props.lang, (newLang)=>{lang.value = newLang})
+
+
 </script>
 
 <template>
   <div class="calendar-grid">
         <div class="days-grid">
-            <div v-for="day, index in DAYS" 
+            <div v-for="day, index in lang==='en'?DAYS:DAYS_RU" 
                 :key="index"
                 :class="['day']" 
                 :title="day">
@@ -31,7 +35,7 @@ const isCurrentMonthAndYear = computed (()=>(
             <div class="date" 
                 v-for="date in state.dateGrid" 
                 :key="date.id">
-                    <div :class="['val', { today: date.dt === current.currentDate && isCurrentMonthAndYear }]" 
+                    <div :class="['val', { today: date.dt === current.currentDate }]" 
                         v-if="date.dt"
                         @click="setCurrentDate(date)">
                             {{ date.dt }}

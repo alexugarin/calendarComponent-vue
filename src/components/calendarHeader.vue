@@ -2,7 +2,11 @@
 import chev from '../assets/chev.svg'
 import {inject, ref, watch} from 'vue'
 
-const MONTHS = {
+const props = defineProps({lang:{type: String,
+   required: true,}})
+const lang = ref(props.lang)
+
+let MONTHS = {
     Jan: 'January',
     Feb: 'February',
     Mar:'March',
@@ -17,6 +21,39 @@ const MONTHS = {
     Dec:'December'
 }
 
+const updateMonths = (lang)=>{
+    MONTHS=
+    lang==='en'?{
+    Jan: 'January',
+    Feb: 'February',
+    Mar:'March',
+    Apr:'April',
+    May:'May',
+    Jun:'June',
+    Jul:'July',
+    Aug:'August',
+    Sep:'September',
+    Oct:'October',
+    Nov:'November',
+    Dec:'December'
+}:
+{
+    Jan: 'Январь',
+    Feb: 'Февраль',
+    Mar:'Март',
+    Apr:'Апрель',
+    May:'Май',
+    Jun:'Июнь',
+    Jul:'Июль',
+    Aug:'Август',
+    Sep:'Сентябрь',
+    Oct:'Октябрь',
+    Nov:'Ноябрь',
+    Dec:'Декабрь'
+}
+console.log(MONTHS)
+}
+
 const {state, dispatch}  = inject('store');
 
 const [_, month, __, year] = state.value.date.dateString.split(' ')
@@ -27,6 +64,16 @@ const current = ref({
 
 watch(()=> state.value.date, (updatedDate)=>{
     const [_, month, __, year] = updatedDate.dateString.split(' ')
+    current.value = {
+        month: MONTHS[month],
+        year
+    }
+})
+
+watch(() => props.lang, (newLang)=>{
+    console.log(newLang)
+    lang.value = newLang
+    updateMonths(lang.value)
     current.value = {
         month: MONTHS[month],
         year

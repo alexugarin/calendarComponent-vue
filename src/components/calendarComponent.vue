@@ -1,13 +1,22 @@
 <script setup>
 import Header from './calendarHeader.vue'
 import calendarGrid from './calendarGrid.vue'
+import { ref, watch } from 'vue';
+
+const props = defineProps({lang:{type: String,
+   required: true,}})
+
+   const lang = ref(props.lang)
+
+   watch(() => props.lang, (newLang)=>{lang.value = newLang})
 </script>
 
 <template>
   <main>
-    <Header/>
-    <calendarGrid/>
+    <Header :lang="lang"/>
+    <calendarGrid :lang="lang"/>
   </main>
+  
 </template>
 
 <style lang="less" scoped>
